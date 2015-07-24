@@ -39,6 +39,7 @@ usage()
     exit 1
 }
 
+export KERNEL_TOOLCHAIN="`pwd`/prebuilt/linux-x86/toolchain/gcc-4.9.4/bin"
 export USE_PREBUILT_CHROMIUM=1
 export USE_CCACHE=1
 

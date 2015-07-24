@@ -1,4 +1,4 @@
-From 0a598d82d640139babe7cffe6819eea63d36b297 Mon Sep 17 00:00:00 2001
+From fa7d24469b7475ae35c4ac64abd4488f676f103a Mon Sep 17 00:00:00 2001
 From: LuK1337 <priv.luk@gmail.com>
 Date: Tue, 10 Feb 2015 16:05:49 +0100
 Subject: [PATCH] vendor/cm: Add chromium_prebuilt.sh
@@ -13,13 +13,13 @@ Change-Id: Iff6b7f8c0204f4ae96de5e61be94c21f761d69cb
  config/common.mk           |  5 +++
  utils/chromium_prebuilt.sh | 80 ++++++++++++++++++++++++++++++++++++++++++++++
  2 files changed, 85 insertions(+)
- create mode 100644 utils/chromium_prebuilt.sh
+ create mode 100755 utils/chromium_prebuilt.sh
 
 diff --git a/config/common.mk b/config/common.mk
-index fa2034a..7494fee 100644
+index 8422d5b..aaf9480 100644
 --- a/config/common.mk
 +++ b/config/common.mk
-@@ -220,6 +220,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
+@@ -223,6 +223,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
  
  PRODUCT_PACKAGE_OVERLAYS += vendor/cm/overlay/common
  
@@ -32,8 +32,8 @@ index fa2034a..7494fee 100644
  PRODUCT_VERSION_MINOR = 1
  PRODUCT_VERSION_MAINTENANCE = 0-RC0
 diff --git a/utils/chromium_prebuilt.sh b/utils/chromium_prebuilt.sh
-new file mode 100644
-index 0000000..f94b183
+new file mode 100755
+index 0000000..7957e9a
 --- /dev/null
 +++ b/utils/chromium_prebuilt.sh
 @@ -0,0 +1,80 @@
@@ -112,11 +112,10 @@ index 0000000..f94b183
 +
 +\$(shell mkdir -p out/target/product/__DEVICE__/system/app/webview/lib/arm)
 +\$(shell mkdir -p out/target/product/__DEVICE__/system/lib)
-+\$(shell cp -r $(LOCAL_PATH)/app/ out/target/product/__DEVICE__/system)
-+\$(shell cp -r $(LOCAL_PATH)/lib/ out/target/product/__DEVICE__/system)
++\$(shell cp -r \$(LOCAL_PATH)/app/ out/target/product/__DEVICE__/system)
++\$(shell cp -r \$(LOCAL_PATH)/lib/ out/target/product/__DEVICE__/system)
 +EOF
 +
 +echo "Done!"
 -- 
-2.1.4
-
+2.5.0
