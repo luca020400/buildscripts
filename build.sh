@@ -87,4 +87,4 @@ breakfast $1
 
 echo ${bldblu}"Starting compilation"${txtrst}
 echo ""
-mka bacon
+LC_ALL=C mka bacon
