@@ -1,42 +1,41 @@
-From fa7d24469b7475ae35c4ac64abd4488f676f103a Mon Sep 17 00:00:00 2001
-From: LuK1337 <priv.luk@gmail.com>
-Date: Tue, 10 Feb 2015 16:05:49 +0100
+From 53839b2a33d709a5f6ca030c41086c8cf1964d8c Mon Sep 17 00:00:00 2001
+From: Jiangyi <sam.andrew.jiang@gmail.com>
+Date: Sun, 13 Sep 2015 14:28:06 +0200
 Subject: [PATCH] vendor/cm: Add chromium_prebuilt.sh
 
-This is squash of
-- https://github.com/AOGP-L/android_vendor_aogp/commit/dc66afe9fe16580111126aadc60510bea8dc6444
-- https://github.com/AOGP-L/android_vendor_aogp/commit/7fdc21224f93c404224e5176c012cd3b3f5a4989
-- https://github.com/AOGP-L/android_vendor_aogp/commit/d1e9359c34aa9c42bb56d099752dff1b2d7fe9e9
+This script will pull the necessary libs from a complete build and generate proper
+makefiles in order to support using a prebuilt Chromium. Files are placed in
+prebuilts/chromium/-devicenamehere-, and are not tracked by git, so they are completely
+out of the way.
 
-Change-Id: Iff6b7f8c0204f4ae96de5e61be94c21f761d69cb
+PS3:
+-replace git -C with params compatible to old git versions
 ---
  config/common.mk           |  5 +++
- utils/chromium_prebuilt.sh | 80 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 85 insertions(+)
- create mode 100755 utils/chromium_prebuilt.sh
+ tools/chromium_prebuilt.sh | 85 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 90 insertions(+)
+ create mode 100755 tools/chromium_prebuilt.sh
 
 diff --git a/config/common.mk b/config/common.mk
-index 8422d5b..aaf9480 100644
+index f4a5de5..9a230b6 100644
 --- a/config/common.mk
 +++ b/config/common.mk
-@@ -223,6 +223,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
+@@ -359,4 +359,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
  
- PRODUCT_PACKAGE_OVERLAYS += vendor/cm/overlay/common
+ -include vendor/cyngn/product.mk
  
 +# Chromium Prebuilt
 +ifeq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
 +-include prebuilts/chromium/$(TARGET_DEVICE)/chromium_prebuilt.mk
 +endif
 +
- PRODUCT_VERSION_MAJOR = 12
- PRODUCT_VERSION_MINOR = 1
- PRODUCT_VERSION_MAINTENANCE = 0-RC0
-diff --git a/utils/chromium_prebuilt.sh b/utils/chromium_prebuilt.sh
+ $(call prepend-product-if-exists, vendor/extra/product.mk)
+diff --git a/tools/chromium_prebuilt.sh b/tools/chromium_prebuilt.sh
 new file mode 100755
-index 0000000..7957e9a
+index 0000000..f9bdc56
 --- /dev/null
-+++ b/utils/chromium_prebuilt.sh
-@@ -0,0 +1,80 @@
++++ b/tools/chromium_prebuilt.sh
+@@ -0,0 +1,85 @@
 +#!/bin/sh
 +
 +# Copyright (C) 2014 The OmniROM Project
@@ -110,12 +109,18 @@ index 0000000..7957e9a
 +
 +LOCAL_PATH := prebuilts/chromium/__DEVICE__/
 +
-+\$(shell mkdir -p out/target/product/__DEVICE__/system/app/webview/lib/arm)
-+\$(shell mkdir -p out/target/product/__DEVICE__/system/lib)
-+\$(shell cp -r \$(LOCAL_PATH)/app/ out/target/product/__DEVICE__/system)
-+\$(shell cp -r \$(LOCAL_PATH)/lib/ out/target/product/__DEVICE__/system)
++PRODUCT_COPY_FILES += \\
++    \$(LOCAL_PATH)/app/webview/webview.apk:system/app/webview/webview.apk \\
++    \$(LOCAL_PATH)/lib/libwebviewchromium.so:system/lib/libwebviewchromium.so \\
++    \$(LOCAL_PATH)/lib/libwebviewchromium_plat_support.so:system/lib/libwebviewchromium_plat_support.so \\
++    \$(LOCAL_PATH)/lib/libwebviewchromium_loader.so:system/lib/libwebviewchromium_loader.so
++
++\$(shell mkdir -p \$(OUTDIR)/target/product/__DEVICE__/system/app/webview/lib/arm/)
++\$(shell cp -r \$(LOCAL_PATH)/app/webview/lib/arm/libwebviewchromium.so \$(OUTDIR)/target/product/__DEVICE__/system/app/webview/lib/arm/libwebviewchromium.so)
++
 +EOF
 +
 +echo "Done!"
 -- 
-2.5.0
+2.5.1
+

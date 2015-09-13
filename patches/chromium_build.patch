@@ -1,7 +1,7 @@
-From e8f987d088f1a67d21d72d6dcbb97cce792881b8 Mon Sep 17 00:00:00 2001
+From f108c5aa637e9e693980b93cbd409aa64e503633 Mon Sep 17 00:00:00 2001
 From: Jiangyi <sam.andrew.jiang@gmail.com>
-Date: Fri, 18 Jul 2014 15:53:13 -0400
-Subject: [PATCH] build: Add chromium prebuilt support to envsetup.sh && The
+Date: Sun, 13 Sep 2015 14:24:33 +0200
+Subject: [PATCH] build: Add chromium prebuilt support to envsetup.sh && The 
  core Makefile
 
 This adds a chromium_prebuilt function to envsetup.sh that is invoked by lunch to check
@@ -15,36 +15,35 @@ none of this would be ran, and regular operations will go on.
 PS13:
 -use export TARGET_DEVICE
 -replace git -C with params compatible to old git versions
-
-Change-Id: I40f8c8dbd2a8a84a5c1b9f47ee04180a71ef4e07
 ---
- core/Makefile |  7 +++++++
- envsetup.sh   | 19 +++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ core/Makefile |  8 ++++++++
+ envsetup.sh   | 28 +++++++++++++++++++++++++++-
+ 2 files changed, 35 insertions(+), 1 deletion(-)
 
 diff --git a/core/Makefile b/core/Makefile
-index 7b25927..84caf1f 100644
+index a0d0854..11070bb 100644
 --- a/core/Makefile
 +++ b/core/Makefile
-@@ -1735,6 +1735,13 @@ $(INTERNAL_FACTORY_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
- .PHONY: factorypackage
- factorypackage: $(INTERNAL_FACTORY_PACKAGE_TARGET)
- 
+@@ -1738,6 +1738,14 @@ CM_TARGET_PACKAGE := $(PRODUCT_OUT)/cm-$(CM_VERSION).zip
+ .PHONY: otapackage bacon
+ otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
+ bacon: otapackage
++
 +ifeq ($(USE_PREBUILT_CHROMIUM),1)
 +ifneq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
 +	@echo "Running Chromium prebuilt setup script..."
-+	$(hide) . $(TOPDIR)vendor/cm/utils/chromium_prebuilt.sh $(TOP)
++	$(hide) . $(TOPDIR)vendor/cm/tools/chromium_prebuilt.sh $(TOP)
 +endif
 +endif
 +
- endif    # recovery_fstab is defined
- endif    # TARGET_NO_KERNEL != true
- endif    # TARGET_DEVICE != generic*
+ 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CM_TARGET_PACKAGE)
+ 	$(hide) $(MD5SUM) $(CM_TARGET_PACKAGE) > $(CM_TARGET_PACKAGE).md5sum
+ 	@echo -e ${CL_CYN}"Package Complete: $(CM_TARGET_PACKAGE)"${CL_RST}
 diff --git a/envsetup.sh b/envsetup.sh
-index ffd130a..2507aa1 100644
+index 4be6ceb..e6a6383 100644
 --- a/envsetup.sh
 +++ b/envsetup.sh
-@@ -644,6 +644,13 @@ function lunch()
+@@ -649,6 +649,13 @@ function lunch()
  
      echo
  
@@ -58,26 +57,34 @@ index ffd130a..2507aa1 100644
      fixup_common_out_dir
  
      set_stuff_for_environment
-@@ -2619,7 +2626,19 @@ function make()
+@@ -2636,7 +2643,26 @@ function make()
      mk_timer $(get_make_command) "$@"
  }
  
+-
 +function chromium_prebuilt() {
 +    T=$(gettop)
 +    export TARGET_DEVICE=$(get_build_var TARGET_DEVICE)
 +    hash=$T/prebuilts/chromium/$TARGET_DEVICE/hash.txt
- 
-+    if [ -r $hash ] && [ $(git --git-dir=$T/external/chromium_org/.git --work-tree=$T/external/chromium_org rev-parse --verify HEAD) == $(cat $hash) ]; then
++    libsCheck=$T/prebuilts/chromium/$TARGET_DEVICE/lib/libwebviewchromium.so
++    libsCheckLoader=$T/prebuilts/chromium/$TARGET_DEVICE/lib/libwebviewchromium_loader.so
++    libsCheckSupport=$T/prebuilts/chromium/$TARGET_DEVICE/lib/libwebviewchromium_plat_support.so
++    AppCheck=$T/prebuilts/chromium/$TARGET_DEVICE/app/webview/webview.apk
++    AppLibCheck=$T/prebuilts/chromium/$TARGET_DEVICE/app/webview/lib/arm/libwebviewchromium.so
++    device_target=$T/prebuilts/chromium/$TARGET_DEVICE/
++
++    if [ -r $hash ] && [ $(git --git-dir=$T/external/chromium_org/.git --work-tree=$T/external/chromium_org rev-parse --verify HEAD) == $(cat $hash) ] && [ -f $libsCheck ]  && [ -f $libsCheckLoader ] && [ -f $libsCheckSupport ]  && [ -f $AppCheck ] && [ -L $AppLibCheck ]; then
 +        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=yes
-+        echo -e "\e[0;32m** Prebuilt Chromium is up-to-date; Will be used for build **\e[00m"
++        echo -e "\033[1m\033[36mPrebuilt Chromium is up-to-date: ${bldgrn}Will be used for build\033[0m"
 +    else
 +        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=no
-+        echo -e "\e[0;31m** Prebuilt Chromium out-of-date/not found; Will build from source **\e[00m"
++        echo -e "\033[1m\033[36mPrebuilt Chromium out-of-date or not found: ${bldylw}Will build from source\033[0m"
++        rm -rfv $device_target &>/dev/null
 +    fi
 +}
  
  if [ "x$SHELL" != "x/bin/bash" ]; then
      case `ps -o command -p $$` in
 -- 
-2.1.4
+2.5.1
 
