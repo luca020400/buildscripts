@@ -75,10 +75,10 @@ index 4be6ceb..e6a6383 100644
 +
 +    if [ -r $hash ] && [ $(git --git-dir=$T/external/chromium_org/.git --work-tree=$T/external/chromium_org rev-parse --verify HEAD) == $(cat $hash) ] && [ -f $libsCheck ]  && [ -f $libsCheckLoader ] && [ -f $libsCheckSupport ]  && [ -f $AppCheck ] && [ -L $AppLibCheck ]; then
 +        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=yes
-+        echo -e "\033[1m\033[36mPrebuilt Chromium is up-to-date: ${bldgrn}Will be used for build\033[0m"
++        echo -e "\033[1m\033[36mPrebuilt Chromium is up-to-date: \033[1m\033[32mWill be used for build\033[0m"
 +    else
 +        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=no
-+        echo -e "\033[1m\033[36mPrebuilt Chromium out-of-date or not found: ${bldylw}Will build from source\033[0m"
++        echo -e "\033[1m\033[36mPrebuilt Chromium out-of-date or not found: \033[1m\033[33mWill build from source\033[0m"
 +        rm -rfv $device_target &>/dev/null
 +    fi
 +}

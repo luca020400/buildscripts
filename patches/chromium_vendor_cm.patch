@@ -1,4 +1,4 @@
-From 53839b2a33d709a5f6ca030c41086c8cf1964d8c Mon Sep 17 00:00:00 2001
+From 6dbd2ef938ea9de84b151d93b6addac510ba4d58 Mon Sep 17 00:00:00 2001
 From: Jiangyi <sam.andrew.jiang@gmail.com>
 Date: Sun, 13 Sep 2015 14:28:06 +0200
 Subject: [PATCH] vendor/cm: Add chromium_prebuilt.sh
@@ -10,10 +10,12 @@ out of the way.
 
 PS3:
 -replace git -C with params compatible to old git versions
+
+Change-Id: Ib95434b87e1bcd288d645d3caba87d78ea3ee439
 ---
  config/common.mk           |  5 +++
- tools/chromium_prebuilt.sh | 85 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 90 insertions(+)
+ tools/chromium_prebuilt.sh | 81 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 86 insertions(+)
  create mode 100755 tools/chromium_prebuilt.sh
 
 diff --git a/config/common.mk b/config/common.mk
@@ -32,10 +34,10 @@ index f4a5de5..9a230b6 100644
  $(call prepend-product-if-exists, vendor/extra/product.mk)
 diff --git a/tools/chromium_prebuilt.sh b/tools/chromium_prebuilt.sh
 new file mode 100755
-index 0000000..f9bdc56
+index 0000000..7a95d28
 --- /dev/null
 +++ b/tools/chromium_prebuilt.sh
-@@ -0,0 +1,85 @@
+@@ -0,0 +1,81 @@
 +#!/bin/sh
 +
 +# Copyright (C) 2014 The OmniROM Project
@@ -109,18 +111,13 @@ index 0000000..f9bdc56
 +
 +LOCAL_PATH := prebuilts/chromium/__DEVICE__/
 +
-+PRODUCT_COPY_FILES += \\
-+    \$(LOCAL_PATH)/app/webview/webview.apk:system/app/webview/webview.apk \\
-+    \$(LOCAL_PATH)/lib/libwebviewchromium.so:system/lib/libwebviewchromium.so \\
-+    \$(LOCAL_PATH)/lib/libwebviewchromium_plat_support.so:system/lib/libwebviewchromium_plat_support.so \\
-+    \$(LOCAL_PATH)/lib/libwebviewchromium_loader.so:system/lib/libwebviewchromium_loader.so
-+
-+\$(shell mkdir -p \$(OUTDIR)/target/product/__DEVICE__/system/app/webview/lib/arm/)
-+\$(shell cp -r \$(LOCAL_PATH)/app/webview/lib/arm/libwebviewchromium.so \$(OUTDIR)/target/product/__DEVICE__/system/app/webview/lib/arm/libwebviewchromium.so)
+++\$(shell mkdir -p out/target/product/__DEVICE__/system/app/webview/lib/arm)
+++\$(shell mkdir -p out/target/product/__DEVICE__/system/lib)
+++\$(shell cp -r \$(LOCAL_PATH)/app/ out/target/product/__DEVICE__/system)
+++\$(shell cp -r \$(LOCAL_PATH)/lib/ out/target/product/__DEVICE__/system)
 +
 +EOF
 +
 +echo "Done!"
 -- 
 2.5.1
-
