@@ -91,9 +91,9 @@ fi
 # Get OS (Linux / Mac OS X)
 IS_DARWIN=$(uname -a | grep Darwin)
 if [ -n "$IS_DARWIN" ]; then
-    CPUS=$((`sysctl hw.ncpu | awk '{print $2}'` + 1))
+    CPUS=$(sysctl hw.ncpu | awk '{print $2}')
 else
-    CPUS=$((`grep "^processor" /proc/cpuinfo -c` + 1))
+    CPUS=$(grep "^processor" /proc/cpuinfo -c)
 fi
 
 opt_adb=0
