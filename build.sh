@@ -151,6 +151,13 @@ else
     opt_v=""
 fi
 
+# Check if jobs is a valid number
+if [ $opt_jobs -eq $opt_jobs ]; then
+    opt_jobs="-j$opt_jobs"
+else
+    opt_jobs="-j$CPUS"
+fi
+
 # Sync
 if [ "$opt_sync" -eq 1 ]; then
     echo -e "${bldcya}Fetching latest sources${rst}"
@@ -176,13 +183,13 @@ breakfast "cm_$device-userdebug"
 if [ "$opt_only" -eq 1 ]; then
     echo -e "${bldcya}Starting compilation: ${bldgrn}Building Boot Image only${rst}"
     echo ""
-    LC_ALL=C make -j$opt_jobs$opt_v bootimage
+    LC_ALL=C make $opt_jobs$opt_v bootimage
 elif [ "$opt_only" -eq 2 ]; then
     echo -e "${bldcya}Starting compilation: ${bldgrn}Building Recovery Image only${rst}"
     echo ""
-    LC_ALL=C make -j$opt_jobs$opt_v recoveryimage
+    LC_ALL=C make $opt_jobs$opt_v recoveryimage
 else
     echo -e "${bldcya}Starting compilation: ${bldgrn}Building ${bldylw}CyanogenMod ${bldmag}$CM_VERSION_MAJOR${bldcya}$CM_VERSION_MINOR ${bldred}$CM_VERSION_MAINTENANCE${rst}"
     echo ""
-    LC_ALL=C make -j$opt_jobs$opt_v bacon
+    LC_ALL=C make $opt_jobs$opt_v bacon
 fi
