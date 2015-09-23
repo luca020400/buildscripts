@@ -111,10 +111,10 @@ index 0000000..7a95d28
 +
 +LOCAL_PATH := prebuilts/chromium/__DEVICE__/
 +
-++\$(shell mkdir -p out/target/product/__DEVICE__/system/app/webview/lib/arm)
-++\$(shell mkdir -p out/target/product/__DEVICE__/system/lib)
-++\$(shell cp -r \$(LOCAL_PATH)/app/ out/target/product/__DEVICE__/system)
-++\$(shell cp -r \$(LOCAL_PATH)/lib/ out/target/product/__DEVICE__/system)
++\$(shell mkdir -p out/target/product/__DEVICE__/system/app/webview/lib/arm)
++\$(shell mkdir -p out/target/product/__DEVICE__/system/lib)
++\$(shell cp -r \$(LOCAL_PATH)/app/ out/target/product/__DEVICE__/system)
++\$(shell cp -r \$(LOCAL_PATH)/lib/ out/target/product/__DEVICE__/system)
 +
 +EOF
 +
