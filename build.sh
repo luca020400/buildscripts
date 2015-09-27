@@ -77,17 +77,6 @@ usage()
     exit 1
 }
 
-# Check directories
-if [ ! -d ".repo" ]; then
-    echo -e "${bldred}No .repo directory found.  Is this an Android build tree?${rst}"
-    echo ""
-    exit 1
-elif [ ! -d "vendor/cm" ]; then
-    echo -e "${bldred}No vendor/cm directory found.  Is this a CM build tree?${rst}"
-    echo ""
-    exit 1
-fi
-
 # Get OS (Linux / Mac OS X)
 IS_DARWIN=$(uname -a | grep Darwin)
 if [ -n "$IS_DARWIN" ]; then
@@ -164,6 +153,17 @@ if [ "$opt_sync" -eq 1 ]; then
     repo sync buildscripts
     ./resync.sh
     echo ""
+fi
+
+# Check directories
+if [ ! -d ".repo" ]; then
+    echo -e "${bldred}No .repo directory found.  Is this an Android build tree?${rst}"
+    echo ""
+    exit 1
+elif [ ! -d "vendor/cm" ]; then
+    echo -e "${bldred}No vendor/cm directory found.  Is this a CM build tree?${rst}"
+    echo ""
+    exit 1
 fi
 
 device="$1"
