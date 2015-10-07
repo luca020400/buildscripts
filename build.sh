@@ -47,8 +47,8 @@ export USE_PREBUILT_CHROMIUM=1
 export USE_CCACHE=1
 
 # CM Version
-export CM_VERSION_MAJOR="12"
-export CM_VERSION_MINOR=".1"
+export CM_VERSION_MAJOR="13"
+export CM_VERSION_MINOR=""
 export CM_VERSION_MAINTENANCE="Unofficial"
 
 usage()
