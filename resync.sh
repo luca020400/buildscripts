@@ -4,7 +4,6 @@ root="$PWD"
 patch_list=(
     'build chromium_build.patch'
     'vendor/cm chromium_vendor_cm.patch'
-    'frameworks/webview chromium_frameworks_webview.patch'
 )
 
 function patch {
@@ -22,7 +21,7 @@ function patch {
                 git am "$root/buildscripts/patches/$patch"
             done
         elif [ "$1" = "reset" ]; then
-            git reset --hard github/cm-12.1
+            git reset --hard github/cm-13.0
         fi
 
         cd "$root"

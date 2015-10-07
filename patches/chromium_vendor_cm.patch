@@ -1,4 +1,4 @@
-From 6dbd2ef938ea9de84b151d93b6addac510ba4d58 Mon Sep 17 00:00:00 2001
+From 94044295dbcdd081ed07aca6467df6a26cb2dfbe Mon Sep 17 00:00:00 2001
 From: Jiangyi <sam.andrew.jiang@gmail.com>
 Date: Sun, 13 Sep 2015 14:28:06 +0200
 Subject: [PATCH] vendor/cm: Add chromium_prebuilt.sh
@@ -19,10 +19,10 @@ Change-Id: Ib95434b87e1bcd288d645d3caba87d78ea3ee439
  create mode 100755 tools/chromium_prebuilt.sh
 
 diff --git a/config/common.mk b/config/common.mk
-index f4a5de5..9a230b6 100644
+index 3ad692a..9809a41 100644
 --- a/config/common.mk
 +++ b/config/common.mk
-@@ -359,4 +359,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
+@@ -364,4 +364,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
  
  -include vendor/cyngn/product.mk
  
@@ -34,7 +34,7 @@ index f4a5de5..9a230b6 100644
  $(call prepend-product-if-exists, vendor/extra/product.mk)
 diff --git a/tools/chromium_prebuilt.sh b/tools/chromium_prebuilt.sh
 new file mode 100755
-index 0000000..7a95d28
+index 0000000..b58c2d7
 --- /dev/null
 +++ b/tools/chromium_prebuilt.sh
 @@ -0,0 +1,81 @@
@@ -120,4 +120,5 @@ index 0000000..7a95d28
 +
 +echo "Done!"
 -- 
-2.5.1
+2.6.1
+

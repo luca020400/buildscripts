@@ -1,7 +1,7 @@
-From f108c5aa637e9e693980b93cbd409aa64e503633 Mon Sep 17 00:00:00 2001
+From caeed27b85e9deb59c20c2a8d2f234eff95dcb73 Mon Sep 17 00:00:00 2001
 From: Jiangyi <sam.andrew.jiang@gmail.com>
 Date: Sun, 13 Sep 2015 14:24:33 +0200
-Subject: [PATCH] build: Add chromium prebuilt support to envsetup.sh && The 
+Subject: [PATCH] build: Add chromium prebuilt support to envsetup.sh && The
  core Makefile
 
 This adds a chromium_prebuilt function to envsetup.sh that is invoked by lunch to check
@@ -17,14 +17,14 @@ PS13:
 -replace git -C with params compatible to old git versions
 ---
  core/Makefile |  8 ++++++++
- envsetup.sh   | 28 +++++++++++++++++++++++++++-
- 2 files changed, 35 insertions(+), 1 deletion(-)
+ envsetup.sh   | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
 diff --git a/core/Makefile b/core/Makefile
-index a0d0854..11070bb 100644
+index 2ed5527..9d3d657 100644
 --- a/core/Makefile
 +++ b/core/Makefile
-@@ -1738,6 +1738,14 @@ CM_TARGET_PACKAGE := $(PRODUCT_OUT)/cm-$(CM_VERSION).zip
+@@ -1729,6 +1729,14 @@ CM_TARGET_PACKAGE := $(PRODUCT_OUT)/cm-$(CM_VERSION).zip
  .PHONY: otapackage bacon
  otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
  bacon: otapackage
@@ -40,10 +40,10 @@ index a0d0854..11070bb 100644
  	$(hide) $(MD5SUM) $(CM_TARGET_PACKAGE) > $(CM_TARGET_PACKAGE).md5sum
  	@echo -e ${CL_CYN}"Package Complete: $(CM_TARGET_PACKAGE)"${CL_RST}
 diff --git a/envsetup.sh b/envsetup.sh
-index 4be6ceb..e6a6383 100644
+index a0dbf3d..6a32092 100644
 --- a/envsetup.sh
 +++ b/envsetup.sh
-@@ -649,6 +649,13 @@ function lunch()
+@@ -654,6 +654,13 @@ function lunch()
  
      echo
  
@@ -57,11 +57,10 @@ index 4be6ceb..e6a6383 100644
      fixup_common_out_dir
  
      set_stuff_for_environment
-@@ -2636,7 +2643,26 @@ function make()
-     mk_timer $(get_make_command) "$@"
+@@ -2336,6 +2343,27 @@ function make()
+     return $ret
  }
  
--
 +function chromium_prebuilt() {
 +    T=$(gettop)
 +    export TARGET_DEVICE=$(get_build_var TARGET_DEVICE)
@@ -82,9 +81,10 @@ index 4be6ceb..e6a6383 100644
 +        rm -rfv $device_target &>/dev/null
 +    fi
 +}
- 
++
  if [ "x$SHELL" != "x/bin/bash" ]; then
      case `ps -o command -p $$` in
+         *bash*)
 -- 
-2.5.1
+2.6.1
 
